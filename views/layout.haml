@@ -1,0 +1,25 @@
+!!!
+%html
+  %head
+    %title= @title || SiteConfig.title
+    %link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}
+  %body
+    #container
+      #header
+        %h1
+          %a{:href => '/'}= SiteConfig.title
+        #nav
+          %ul
+            %li
+              - if session[:user]
+                %a{:href => '/logout'} logout
+              - else 
+                %a{:href => '/home'} login
+            %li
+              - if session[:user]
+                %a{:href => '/'} invite
+              - else 
+                %a{:href => '/signup'} signup
+      #content= yield
+    #footer
+      %p#legal= "&copy; #{Time.now.strftime('%Y')} <a href='#{SiteConfig.author_site}'>#{SiteConfig.author}</a>"

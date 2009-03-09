@@ -1,0 +1,8 @@
+%form{:action => '/login', :method => 'post'}
+  %label
+    %p email:
+    %input{:id => 'user_email', :name => 'email', :type => 'text'}
+  %label
+    %p password:
+    %input{:id => 'user_password', :name => 'password', :type => 'password'}
+  %input{:value => 'login', :type => 'submit'}
