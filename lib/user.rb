@@ -2,6 +2,7 @@ class User
   include DataMapper::Resource
   
   has n, :links
+  has n, :docs
 
   attr_accessor :password, :password_confirmation
 

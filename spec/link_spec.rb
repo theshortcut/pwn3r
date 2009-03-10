@@ -31,4 +31,5 @@ describe 'link' do
     @link.save
     @link.token.length.should == 4
   end
+
 end

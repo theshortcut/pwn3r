@@ -1,0 +1,5 @@
+%form{:action => '/doc/new', :method => 'post', :enctype => 'multipart/form-data'}
+  %label
+    %p file:
+    %input{:id => 'doc_file', :name => 'file', :type => 'file'}
+  %input{:value => 'upload', :type => 'submit'}

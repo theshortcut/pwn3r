@@ -1,0 +1,16 @@
+%h2 
+  Welcome
+  = current_user.email
+%h3= "Links(#{@links.count})"
+- @links.each do |link|
+  %p
+    %a{:href => link.url}= link.url
+    %small= "(<a href='/#{link.token}'>#{link.token}</a>)"
+    visits: 
+    %span= link.visits.count
+%h3= "Files(#{@docs.count})"
+- @docs.each do |doc|
+  %p
+    %a{:href => "/#{doc.token}"}= doc.token 
+    visits: 
+    %span= doc.visits.count

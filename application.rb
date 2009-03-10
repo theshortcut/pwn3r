@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'environment'
+require 'fileutils'
 
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
@@ -74,15 +75,67 @@ delete '/user/:id' do
   redirect '/'
 end
 
-get '/home' do
+get '/dashboard' do
   login_required
-  haml :home
+  @links = Link.all(:user_id => session[:user].object_id)
+  @docs = Doc.all(:user_id => session[:user].object_id)
+  haml :dashboard
+end
+
+get '/link/new' do
+  login_required
+  haml :'link/new'
+end
+
+post '/link/new' do
+  @link = Link.new(:url => params[:url], :user_id => session[:user].object_id)
+  if @link.save
+    redirect '/dashboard'
+  else
+    session[:flash] = "failure!"
+  end
+end
+
+get '/doc/new' do
+  haml :'doc/new'
+end
+
+post '/doc/new' do
+  @file = params[:file][:tempfile]
+  @doc = Doc.new(:filename => params[:file][:filename], :user_id => session[:user].object_id)
+  if @doc.save
+    FileUtils.mkdir_p "public/#{current_user.email}"
+    File.open("public/#{current_user.email}/#{@doc.filename}",'w'){|f| f.write @file.read}
+    redirect '/dashboard'
+  else
+    session[:flash] = "failure!"
+  end
 end
 
 # sass
 get '/main.css' do
   headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :main
+end
+
+# token stuff
+get '/:token' do
+  @link = Link.first(:token => params[:token])
+  if @link.nil?
+    @link = Doc.first(:token => params[:token])
+  end
+  if !@link.nil?
+    @link.add_visit(request)
+    if @link.class == Link
+      redirect @link.url
+    elsif @link.class == Doc
+      owner = User.first(@link.user_id)
+      # redirect "/#{owner.first.email}/#{@link.filename}"
+      send_file "public/#{owner.first.email}/#{@link.filename}", :disposition => 'inline'
+    end
+  elsif @link.nil?
+    redirect '/'
+  end
 end
 
 private
@@ -98,7 +151,8 @@ def login_required
 end
 
 def current_user
-  User.first(session[:user])
+  temp_user = User.first(session[:user].object_id)
+  current_user = temp_user.first
 end
 
 def redirect_to_stored

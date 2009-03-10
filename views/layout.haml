@@ -14,7 +14,12 @@
               - if session[:user]
                 %a{:href => '/logout'} logout
               - else 
-                %a{:href => '/home'} login
+                %a{:href => '/dashboard'} login
+            - if session[:user]
+              %li
+                %a{:href => '/link/new'} new link
+              %li
+                %a{:href => '/doc/new'} new file
             %li
               - if session[:user]
                 %a{:href => '/'} invite
