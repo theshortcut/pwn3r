@@ -4,7 +4,15 @@ A Sinatra application for shortening urls and sharing files.
 
 == Setup
 
-Dependencies and all configuration is done in <tt>environment.rb</tt>. Your database is also set up here. DataMapper will use sqlite3 by default. Tests use the sqlite3-memory adapter (no configuration needed).
-
   rake db:migrate
   ruby application.rb
+
+Then head to '/signup' to setup your account and '/dashboard' to start messing around. Relies on the 'datamapper', 'sinatra', and 'haml' gems.
+
+== To Do
+
+* Make sure the link/doc tokens are unique
+* Use username rather than email for auth and file storage
+* Figure out testing on file uploads
+* Ability to close signup and use invitation system
+* Make everything snazzier!
