@@ -2,15 +2,36 @@
   Welcome
   = current_user.email
 %h3= "Links(#{@links.count})"
-- @links.each do |link|
-  %p
-    %a{:href => link.url}= link.url
-    %small= "(<a href='/#{link.token}'>#{link.token}</a>)"
-    visits: 
-    %span= link.visits.count
+%table#links.tablesorter
+  %thead
+    %tr
+      %th url
+      %th pwn3d
+      %th visits
+      %th date
+  %tbody
+    - @links.each do |link|
+      %tr
+        %td
+          %a{:href => link.url}= link.url
+        %td
+          %a{:href => "/#{link.token}"}= link.token
+        %td= link.visits.count
+        %td= link.created_at.strftime("%m/%d/%Y")
 %h3= "Files(#{@docs.count})"
-- @docs.each do |doc|
-  %p
-    %a{:href => "/#{doc.token}"}= doc.token 
-    visits: 
-    %span= doc.visits.count
+%table#files.tablesorter
+  %thead
+    %tr
+      %th filename
+      %th pwn3d
+      %th visits
+      %th date
+  %tbody
+    - @docs.each do |doc|
+      %tr
+        %td
+          %a{:href => "/#{current_user.email}/#{doc.filename}"}= doc.filename
+        %td
+          %a{:href => "/#{doc.token}"}= doc.token
+        %td= doc.visits.count
+        %td= doc.created_at.strftime("%m/%d/%Y")

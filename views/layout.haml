@@ -1,8 +1,12 @@
-!!!
-%html
+!!! XML
+!!! Strict
+%html{html_attrs('en-US')}
   %head
     %title= @title || SiteConfig.title
     %link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}
+    %script{:src => '/jquery.js', :type => 'text/javascript'}
+    %script{:src => '/jquery.tablesorter.js', :type => 'text/javascript'}
+    %script{:src => '/pwn3r.js', :type => 'text/javascript'}
   %body
     #container
       #header
@@ -10,21 +14,20 @@
           %a{:href => '/'}= SiteConfig.title
         #nav
           %ul
-            %li
-              - if session[:user]
-                %a{:href => '/logout'} logout
-              - else 
-                %a{:href => '/dashboard'} login
             - if session[:user]
               %li
                 %a{:href => '/link/new'} new link
               %li
                 %a{:href => '/doc/new'} new file
-            %li
-              - if session[:user]
+              %li
                 %a{:href => '/'} invite
-              - else 
+              %li
+                %a{:href => '/logout'} logout
+            - else 
+              %li
                 %a{:href => '/signup'} signup
+              %li
+                %a{:href => '/login'} login
       #content= yield
     #footer
       %p#legal= "&copy; #{Time.now.strftime('%Y')} <a href='#{SiteConfig.author_site}'>#{SiteConfig.author}</a>"
