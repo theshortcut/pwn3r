@@ -22,7 +22,11 @@ end
 
 # root page
 get '/' do
-  haml :root
+  if session[:user]
+    redirect '/dashboard'
+  else
+    haml :root
+  end
 end
 
 # authentication stuff
