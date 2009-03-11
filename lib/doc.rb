@@ -3,7 +3,7 @@ class Doc
   TOKEN_LENGTH = 4
   
   belongs_to :user
-  has n, :visits
+  has n, :visits, :constraint => :destroy
 
   property :id, Serial, :protected => true
   property :filename, String
@@ -12,6 +12,12 @@ class Doc
   property :created_at, DateTime
 
   before :create, :generate_token
+  
+  before :destroy do |doc|
+    doc.visits.each do |visit|
+      visit.destroy
+    end
+  end
 
   def add_visit(request)
     visit = visits.build(:ip_address => request.ip)

@@ -1,8 +1,8 @@
 class User
   include DataMapper::Resource
   
-  has n, :links
-  has n, :docs
+  has n, :links, :constraint => :destroy
+  has n, :docs, :constraint => :destroy
 
   attr_accessor :password, :password_confirmation
 

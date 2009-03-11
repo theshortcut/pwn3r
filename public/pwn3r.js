@@ -1,4 +1,4 @@
 $(function() {
-    $("#links").tablesorter();
-    $("#files").tablesorter();
+    $("#links").tablesorter({widgets: ['zebra']});
+    $("#files").tablesorter({widgets: ['zebra']});
 });

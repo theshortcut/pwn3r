@@ -100,6 +100,16 @@ post '/link/new' do
   end
 end
 
+delete '/link/:id' do
+  link = Link.get(params[:id])
+  if link.destroy
+    session[:flash] = "link deleted"
+  else
+    session[:flash] = "could not delete link"
+  end
+  redirect '/dashboard'
+end
+
 get '/doc/new' do
   haml :'doc/new'
 end
@@ -114,6 +124,18 @@ post '/doc/new' do
   else
     session[:flash] = "failure!"
   end
+end
+
+delete '/doc/:id' do
+  doc = Doc.get(params[:id])
+  temp_filename = doc.filename
+  if doc.destroy
+    File.delete("public/#{current_user.email}/#{doc.filename}")
+    session[:flash] = "file deleted"
+  else
+    session[:flash] = "unable to delete file"
+  end
+  redirect '/dashboard'
 end
 
 # sass
@@ -134,7 +156,6 @@ get '/:token' do
       redirect @link.url
     elsif @link.class == Doc
       owner = User.first(@link.user_id)
-      # redirect "/#{owner.first.email}/#{@link.filename}"
       send_file "public/#{owner.first.email}/#{@link.filename}", :disposition => 'inline'
     end
   elsif @link.nil?
@@ -155,7 +176,7 @@ def login_required
 end
 
 def current_user
-  temp_user = User.first(session[:user].object_id)
+  temp_user = User.first(session[:user])
   current_user = temp_user.first
 end
 

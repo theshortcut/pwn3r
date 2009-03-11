@@ -3,7 +3,7 @@ class Link
   TOKEN_LENGTH = 4
   
   belongs_to :user
-  has n, :visits
+  has n, :visits, :constraint => :destroy
 
   property :id, Serial, :protected => true
   property :url, String

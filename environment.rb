@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'dm-core'
+require 'dm-constraints'
 require 'dm-timestamps'
 require 'dm-validations'
 require 'dm-aggregates'
@@ -16,7 +17,7 @@ configure do
                  :url_base => 'http://localhost:4567/'
                )
 
-  DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db")
+  DataMapper.setup(:default, "mysql://root@localhost/pwn3r")
 
   # load models
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")

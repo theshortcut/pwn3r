@@ -1,7 +1,7 @@
 %h2 
   Welcome
   = current_user.email
-%h3= "Links(#{@links.count})"
+%h3 Links
 %table#links.tablesorter
   %thead
     %tr
@@ -9,6 +9,7 @@
       %th pwn3d
       %th visits
       %th date
+      %th.none
   %tbody
     - @links.each do |link|
       %tr
@@ -18,7 +19,12 @@
           %a{:href => "/#{link.token}"}= link.token
         %td= link.visits.count
         %td= link.created_at.strftime("%m/%d/%Y")
-%h3= "Files(#{@docs.count})"
+        %td
+          %form{:method => "post", :action => "/link/#{link.id}"}
+            %input{:name => "_method", :value => "delete", :type => "hidden"}
+            %button{:type => "submit"}
+              %img{:src => "/images/trash.gif"}
+%h3 Files
 %table#files.tablesorter
   %thead
     %tr
@@ -26,6 +32,7 @@
       %th pwn3d
       %th visits
       %th date
+      %th.none
   %tbody
     - @docs.each do |doc|
       %tr
@@ -35,3 +42,8 @@
           %a{:href => "/#{doc.token}"}= doc.token
         %td= doc.visits.count
         %td= doc.created_at.strftime("%m/%d/%Y")
+        %td
+          %form{:method => "post", :action => "/doc/#{doc.id}"}
+            %input{:name => "_method", :value => "delete", :type => "hidden"}
+            %button{:type => "submit"}
+              %img{:src => "/images/trash.gif"}
