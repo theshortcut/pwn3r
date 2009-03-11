@@ -12,12 +12,6 @@ class Doc
   property :created_at, DateTime
 
   before :create, :generate_token
-  
-  before :destroy do |doc|
-    doc.visits.each do |visit|
-      visit.destroy
-    end
-  end
 
   def add_visit(request)
     visit = visits.build(:ip_address => request.ip)
